@@ -11,13 +11,10 @@ class TodoView extends StatefulWidget {
 
   @override
   // _TodoViewState createState() => _TodoViewState(todo: this.todo);
-  _TodoViewState createState() => _TodoViewState(todoData: this.todoData);
+  _TodoViewState createState() => _TodoViewState();
 }
 
 class _TodoViewState extends State<TodoView> {
-  TodoData todoData;
-  _TodoViewState({required this.todoData});
-
   String formatDate(DateFormat formatter, DateTime? dateTime) {
     if (dateTime != null) {
       return formatter.format(dateTime);
@@ -29,7 +26,7 @@ class _TodoViewState extends State<TodoView> {
   Widget build(BuildContext context) {
     final DateFormat formatter = DateFormat('dd/MM/yyyy: hh:mm:ss');
 
-    if (todoData.status) {
+    if (widget.todoData.status) {
       return Card(
           elevation: 8.0,
           child: SizedBox(
@@ -38,10 +35,10 @@ class _TodoViewState extends State<TodoView> {
                 const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
             leading: Checkbox(
               checkColor: Colors.white,
-              value: todoData.status,
+              value: widget.todoData.status,
               onChanged: (bool? val) {
                 setState(() {
-                  todoData.status = !todoData.status;
+                  widget.todoData.status = !widget.todoData.status;
                 });
               },
             ),
@@ -53,13 +50,13 @@ class _TodoViewState extends State<TodoView> {
                   Padding(
                     padding: const EdgeInsets.only(
                         bottom: 10), //apply padding to some sides only
-                    child: Text(todoData.title),
+                    child: Text(widget.todoData.title),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         bottom: 10), //apply padding to some sides only
                     child: Text(
-                      todoData.description,
+                      widget.todoData.description,
                       style:
                           const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.6)),
                       textAlign: TextAlign.left,
@@ -69,7 +66,7 @@ class _TodoViewState extends State<TodoView> {
                     padding: const EdgeInsets.only(
                         bottom: 10), //apply padding to some sides only
                     child: Text(
-                      formatDate(formatter, todoData.getDateTime()),
+                      formatDate(formatter, widget.todoData.getDateTime()),
                       style:
                           const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.6)),
                     ),

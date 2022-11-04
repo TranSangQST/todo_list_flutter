@@ -48,86 +48,86 @@ class _HomePageState extends State<HomePage> {
         description: "d2",
         status: true,
         dateTime: new DateTime(2022, 11, 2, 2, 2, 2)),
-    new TodoData(
-        title: "t2",
-        description: "d2",
-        status: true,
-        dateTime: new DateTime(2022, 11, 2, 4, 4, 4)),
-    new TodoData(
-        title: "t3",
-        description: "d3",
-        status: true,
-        dateTime: new DateTime(2022, 11, 3, 1, 1, 1)),
-    new TodoData(
-        title: "t3",
-        description: "d3",
-        status: true,
-        dateTime: new DateTime(2022, 11, 3, 2, 2, 2)),
-    new TodoData(
-        title: "t3",
-        description: "d3",
-        status: true,
-        dateTime: new DateTime(2022, 11, 3, 4, 4, 4)),
-    new TodoData(
-        title: "t4",
-        description: "d4",
-        status: true,
-        dateTime: new DateTime(2022, 11, 4, 1, 1, 1)),
-    new TodoData(
-        title: "t4",
-        description: "d4",
-        status: true,
-        dateTime: new DateTime(2022, 11, 4, 2, 2, 2)),
-    new TodoData(
-        title: "t4",
-        description: "d4",
-        status: true,
-        dateTime: new DateTime(2022, 11, 4, 4, 4, 4)),
-    new TodoData(
-        title: "t5",
-        description: "d5",
-        status: true,
-        dateTime: new DateTime(2022, 11, 5, 1, 1, 1)),
-    new TodoData(
-        title: "t5",
-        description: "d5",
-        status: true,
-        dateTime: new DateTime(2022, 11, 5, 2, 2, 2)),
-    new TodoData(
-        title: "t5",
-        description: "d5",
-        status: true,
-        dateTime: new DateTime(2022, 11, 5, 4, 4, 4)),
-    new TodoData(
-        title: "t6",
-        description: "d6",
-        status: true,
-        dateTime: new DateTime(2022, 11, 6, 1, 1, 1)),
-    new TodoData(
-        title: "t6",
-        description: "d6",
-        status: true,
-        dateTime: new DateTime(2022, 11, 6, 2, 2, 2)),
-    new TodoData(
-        title: "t6",
-        description: "d6",
-        status: true,
-        dateTime: new DateTime(2022, 11, 6, 4, 4, 4)),
-    new TodoData(
-        title: "t7",
-        description: "d7",
-        status: true,
-        dateTime: new DateTime(2022, 11, 7, 1, 1, 1)),
-    new TodoData(
-        title: "t7",
-        description: "d7",
-        status: true,
-        dateTime: new DateTime(2022, 11, 7, 2, 2, 2)),
-    new TodoData(
-        title: "t7",
-        description: "d7",
-        status: true,
-        dateTime: new DateTime(2022, 11, 7, 4, 4, 4)),
+    // new TodoData(
+    //     title: "t2",
+    //     description: "d2",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 2, 4, 4, 4)),
+    // new TodoData(
+    //     title: "t3",
+    //     description: "d3",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 3, 1, 1, 1)),
+    // new TodoData(
+    //     title: "t3",
+    //     description: "d3",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 3, 2, 2, 2)),
+    // new TodoData(
+    //     title: "t3",
+    //     description: "d3",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 3, 4, 4, 4)),
+    // new TodoData(
+    //     title: "t4",
+    //     description: "d4",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 4, 1, 1, 1)),
+    // new TodoData(
+    //     title: "t4",
+    //     description: "d4",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 4, 2, 2, 2)),
+    // new TodoData(
+    //     title: "t4",
+    //     description: "d4",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 4, 4, 4, 4)),
+    // new TodoData(
+    //     title: "t5",
+    //     description: "d5",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 5, 1, 1, 1)),
+    // new TodoData(
+    //     title: "t5",
+    //     description: "d5",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 5, 2, 2, 2)),
+    // new TodoData(
+    //     title: "t5",
+    //     description: "d5",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 5, 4, 4, 4)),
+    // new TodoData(
+    //     title: "t6",
+    //     description: "d6",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 6, 1, 1, 1)),
+    // new TodoData(
+    //     title: "t6",
+    //     description: "d6",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 6, 2, 2, 2)),
+    // new TodoData(
+    //     title: "t6",
+    //     description: "d6",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 6, 4, 4, 4)),
+    // new TodoData(
+    //     title: "t7",
+    //     description: "d7",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 7, 1, 1, 1)),
+    // new TodoData(
+    //     title: "t7",
+    //     description: "d7",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 7, 2, 2, 2)),
+    // new TodoData(
+    //     title: "t7",
+    //     description: "d7",
+    //     status: true,
+    //     dateTime: new DateTime(2022, 11, 7, 4, 4, 4)),
   ];
 
   int _currentTabIndex = 2;
@@ -290,21 +290,20 @@ class _HomePageState extends State<HomePage> {
         onTap: (int index) {
           print("Click tab");
 
-          // List<TodoData> temp = _todoList
-          //     .where((element) => element.getDateTime() != null)
-          //     .toList();
-          List<TodoData> temp = [
-            new TodoData(
-                title: "t5",
-                description: "d5",
-                status: true,
-                dateTime: new DateTime(2022, 11, 5, 1, 1, 1)),
-            new TodoData(
-                title: "t5",
-                description: "d5",
-                status: true,
-                dateTime: new DateTime(2022, 11, 5, 2, 2, 2)),
-          ];
+          List<TodoData> temp =
+              _todoList.where((element) => element.title == "t2").toList();
+          // List<TodoData> temp = [
+          //   new TodoData(
+          //       title: "t5",
+          //       description: "d5",
+          //       status: true,
+          //       dateTime: new DateTime(2022, 11, 5, 1, 1, 1)),
+          //   new TodoData(
+          //       title: "t5",
+          //       description: "d5",
+          //       status: true,
+          //       dateTime: new DateTime(2022, 11, 5, 2, 2, 2)),
+          // ];
 
           setState(() {
             _currentTabIndex = index;
