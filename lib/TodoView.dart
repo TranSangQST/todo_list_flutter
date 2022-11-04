@@ -18,6 +18,14 @@ class _TodoViewState extends State<TodoView> {
   TodoData todoData;
   _TodoViewState({required this.todoData});
 
+  String formatDate(DateFormat formatter, DateTime? dateTime) {
+    if (dateTime != null) {
+      return formatter.format(dateTime);
+    } else {
+      return "";
+    }
+  }
+
   Widget build(BuildContext context) {
     final DateFormat formatter = DateFormat('dd/MM/yyyy: hh:mm:ss');
 
@@ -61,7 +69,7 @@ class _TodoViewState extends State<TodoView> {
                     padding: const EdgeInsets.only(
                         bottom: 10), //apply padding to some sides only
                     child: Text(
-                      formatter.format(todoData.dateTime),
+                      formatDate(formatter, todoData.getDateTime()),
                       style:
                           const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.6)),
                     ),

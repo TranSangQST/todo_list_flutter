@@ -130,10 +130,11 @@ class _HomePageState extends State<HomePage> {
         dateTime: new DateTime(2022, 11, 7, 4, 4, 4)),
   ];
 
-  int _currentTabIndex = 2;
+  int _currentTabIndex = 0;
 
   var _todoDataTitleController = TextEditingController();
   var _todoDataDescriptionController = TextEditingController();
+  // var _todoDataTitleController = TextEditingController();
 
   void addTodo() {
     TodoData newTodoData = TodoData(
@@ -152,13 +153,132 @@ class _HomePageState extends State<HomePage> {
           new DateTime.now().month, new DateTime.now().day);
       _todoList.add(newTodoData);
     });
+
+    // setState(() {});
   }
+
+  void handleRemoveTodo(TodoData todoData, int index) {}
+
+  int groupComparator(String value1, String value2, int tabType) {
+    switch (tabType) {
+      case 0:
+        {
+          return 1;
+        }
+
+      case 1:
+      case 2:
+        {
+          return value1 == "Overdue" ? 1 : value2.compareTo(value1);
+        }
+      default:
+        {
+          return 1;
+        }
+    }
+  }
+
+  int itemComparator(dynamic value1, dynamic value2, int tabType) {
+    switch (tabType) {
+      case 0:
+        {
+          return 1;
+        }
+
+      case 1:
+      case 2:
+        {
+          return value2.dateTime.difference(value1.dateTime).inSeconds;
+        }
+      default:
+        {
+          return 1;
+        }
+    }
+  }
+
+  String groupBy(dynamic element, DateFormat formatter, int tabType) {
+    switch (tabType) {
+      case 0:
+        {
+          return "";
+        }
+
+      case 1:
+      case 2:
+        {
+          return element.dateTime.isBefore(DateTime.now())
+              ? "Overdue"
+              : formatter.format(element.dateTime);
+        }
+      default:
+        {
+          return "";
+        }
+    }
+  }
+
+  // List<TodoData> getTodoListForEachTab(List<TodoData> todoList, tabType) {
+  //   print('_todoList: $_todoList');
+
+  //   List<TodoData> todoListForEachTab = [];
+
+  //   switch (tabType) {
+  //     case 0:
+  //       {
+  //         todoListForEachTab = todoList;
+  //       }
+  //       break;
+  //     case 1:
+  //     case 2:
+  //       {
+  //         todoListForEachTab = todoList
+  //             .where((element) => element.getDateTime() != null)
+  //             .toList();
+  //       }
+  //       break;
+
+  //     default:
+  //       {
+  //         todoListForEachTab = todoList;
+  //       }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     print('-----------------------------------------------------');
+    // print('_todoList: $_todoList');
 
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
+
+    // List<TodoData> todoListForTab = [];
+    // // _todoList.where((element) => element.getDateTime() != null).toList();
+    //
+    //
+    // switch (_currentTabIndex) {
+    //   case 0:
+    //     {
+    //       todoListForTab = _todoList;
+    //     }
+    //     break;
+    //   case 1:
+    //   case 2:
+    //     {
+    //       todoListForTab =  _todoList.where((element) => element.getDateTime() != null).toList();
+    //     }
+    //     break;
+    //
+    //
+    //   default:
+    //     {
+    //       todoListForTab =  _todoList.where((element) => element.getDateTime() != null).toList();
+    //     }
+    //     break;
+    // }
+    // // List<TodoData> todoListForTab =
+    // //     _todoList.where((element) => element.getDateTime() != null).toList();
+    // print('todoListForTab: $todoListForTab');
 
     return Scaffold(
       appBar: AppBar(
@@ -252,6 +372,8 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(color: Colors.blue),
                 )),
             Expanded(
+              //        <-- Use Expanded
+
               child: ListView.builder(
                   padding: const EdgeInsets.all(8),
                   itemCount: _todoList.length,
@@ -260,6 +382,41 @@ class _HomePageState extends State<HomePage> {
                       todoData: _todoList[index],
                     );
                   }),
+              // child: GroupedListView<dynamic, String>(
+              //   elements: _todoList,
+              //   itemBuilder: (c, element) {
+              //     return TodoView(
+              //       todoData: element,
+              //     );
+              //   },
+
+              //   groupComparator: (value1, value2) =>
+              //       groupComparator(value1, value2, _currentTabIndex),
+              //   // value1 == "Overdue" ? 1 : value2.compareTo(value1),
+              //   order: GroupedListOrder.DESC,
+              //   itemComparator: (value1, value2) =>
+              //       itemComparator(value1, value2, _currentTabIndex),
+              //   // value2.dateTime.difference(value1.dateTime).inSeconds,
+
+              //   groupBy: (element) =>
+              //       groupBy(element, formatter, _currentTabIndex),
+              //   // groupBy: (element) => "",
+              //   groupSeparatorBuilder: (String value) => Padding(
+              //       padding: const EdgeInsets.all(10.0),
+              //       child: Container(
+              //         padding: const EdgeInsets.only(bottom: 10.0),
+              //         decoration: const BoxDecoration(
+              //             border: Border(
+              //                 bottom: BorderSide(
+              //                     color: Color.fromRGBO(0, 0, 0, 0.2)))),
+              //         child: Text(
+              //           value,
+              //           textAlign: TextAlign.left,
+              //           style: const TextStyle(
+              //               fontSize: 20, fontWeight: FontWeight.bold),
+              //         ),
+              //       )),
+              // ),
             ),
           ],
         ),
@@ -289,10 +446,36 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: Colors.amber[800],
         onTap: (int index) {
           print("Click tab");
-
+          // List<TodoData> temp = _todoList.where((element) => element.getDateTime() != null).toList();
+          // List<TodoData> temp = _todoList.where((element) => true).toList();
+          // List<TodoData> temp = [];
           // List<TodoData> temp = _todoList
-          //     .where((element) => element.getDateTime() != null)
+          //     // .where((element) => element.getDateTime() != null)
+          //     // .toList()
+          //     .map((e) => e.clone())
           //     .toList();
+          // for (int i = 0; i < _todoList.length; i++) {
+          //   // temp.add(_todoList[i].clone());
+          //   if (_todoList[i] == temp[i]) {
+          //     print("$i: _todoList[i] == temp[i]");
+          //   } else {
+          //     print("$i: _todoList[i] != temp[i]");
+          //   }
+          // }
+
+          // List<TodoData> temp = [
+          //   new TodoData(
+          //       title: "t2",
+          //       description: "d2",
+          //       status: true,
+          //       dateTime: new DateTime(2022, 11, 2, 2, 2, 2)),
+          //   new TodoData(
+          //       title: "t2",
+          //       description: "d2",
+          //       status: true,
+          //       dateTime: new DateTime(2022, 11, 2, 4, 4, 4))
+          // ];
+
           List<TodoData> temp = [
             new TodoData(
                 title: "t5",
@@ -312,9 +495,22 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
+// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+// class GroupedListViewProperties {
+//   Function groupComparator;
+//   Function itemComparator;
+//   Function groupBy;
+
+//   GroupedListViewProperties(
+//     this.groupComparator,
+//     this.itemComparator,
+//     this.groupBy,
+//   )
+// }
 
 class CustomPicker extends CommonPickerModel {
   String digits(int value, int length) {
@@ -390,3 +586,100 @@ class CustomPicker extends CommonPickerModel {
             this.currentRightIndex());
   }
 }
+
+List<TodoData> _todoList2 = [
+  new TodoData(
+      title: "t5",
+      description: "d5",
+      status: true,
+      dateTime: new DateTime(2022, 11, 5, 1, 1, 1)),
+  new TodoData(
+      title: "t5",
+      description: "d5",
+      status: true,
+      dateTime: new DateTime(2022, 11, 5, 2, 2, 2)),
+  new TodoData(
+      title: "t5",
+      description: "d5",
+      status: true,
+      dateTime: new DateTime(2022, 11, 5, 4, 4, 4)),
+  new TodoData(
+      title: "t6",
+      description: "d6",
+      status: true,
+      dateTime: new DateTime(2022, 11, 6, 1, 1, 1)),
+  new TodoData(
+      title: "t6",
+      description: "d6",
+      status: true,
+      dateTime: new DateTime(2022, 11, 6, 2, 2, 2)),
+  new TodoData(
+      title: "t6",
+      description: "d6",
+      status: true,
+      dateTime: new DateTime(2022, 11, 6, 4, 4, 4)),
+];
+
+
+//      ListView.builder(
+//   itemCount: _todoList.length,
+//   itemBuilder: (BuildContext context, int index) {
+//     TodoData todoData = _todoList[index];
+//     if (todoData.status)
+//       return TodoView(
+//         todoData: todoData,
+//         index: index,
+//         handleRemoveTodo: handleRemoveTodo,
+//       );
+//     else
+//       return const Divider(
+//         height: 0,
+//         thickness: 0,
+//       );
+//   },
+// )
+
+// void handleRemoveTodo(TodoData todoData, int index) {
+//   todoData.status = false;
+//   String str = todoData.toString();
+//   print('Remove $str');
+//   TodoData newTodo = todoData.clone();
+//   newTodo.status = false;
+//   String str2 = newTodo.toString();
+//   print('new todo $str2');
+//   // int index = _todoList.indexOf(todoData);
+//   // print("idx: $idx");
+//   print("index: $index");
+
+//   setState(() {
+//     _todoList.removeAt(index);
+//   });
+// }
+
+// new TodoData(title: "t1", description: "d1", status: true, dateTime: new DateTime(2022, 11, 1, 1, 1, 1)),
+// new TodoData(title: "t1", description: "d1", status: true, dateTime: new DateTime(2022, 11, 1, 2, 2, 2)),
+// new TodoData(title: "t1", description: "d1", status: true, dateTime: new DateTime(2022, 11, 1, 4, 4, 4)),
+
+// new TodoData(title: "t2", description: "d2", status: true, dateTime: new DateTime(2022, 11, 2, 1, 1, 1)),
+// new TodoData(title: "t2", description: "d2", status: true, dateTime: new DateTime(2022, 11, 2, 2, 2, 2)),
+// new TodoData(title: "t2", description: "d2", status: true, dateTime: new DateTime(2022, 11, 2, 4, 4, 4)),
+
+// new TodoData(title: "t3", description: "d3", status: true, dateTime: new DateTime(2022, 11, 3, 1, 1, 1)),
+// new TodoData(title: "t3", description: "d3", status: true, dateTime: new DateTime(2022, 11, 3, 2, 2, 2)),
+// new TodoData(title: "t3", description: "d3", status: true, dateTime: new DateTime(2022, 11, 3, 4, 4, 4)),
+
+// new TodoData(title: "t4", description: "d4", status: true, dateTime: new DateTime(2022, 11, 4, 1, 1, 1)),
+// new TodoData(title: "t4", description: "d4", status: true, dateTime: new DateTime(2022, 11, 4, 2, 2, 2)),
+// new TodoData(title: "t4", description: "d4", status: true, dateTime: new DateTime(2022, 11, 4, 4, 4, 4)),
+
+// new TodoData(title: "t5", description: "d5", status: true, dateTime: new DateTime(2022, 11, 5, 1, 1, 1)),
+// new TodoData(title: "t5", description: "d5", status: true, dateTime: new DateTime(2022, 11, 5, 2, 2, 2)),
+// new TodoData(title: "t5", description: "d5", status: true, dateTime: new DateTime(2022, 11, 5, 4, 4, 4)),
+
+// new TodoData(title: "t6", description: "d6", status: true, dateTime: new DateTime(2022, 11, 6, 1, 1, 1)),
+// new TodoData(title: "t6", description: "d6", status: true, dateTime: new DateTime(2022, 11, 6, 2, 2, 2)),
+// new TodoData(title: "t6", description: "d6", status: true, dateTime: new DateTime(2022, 11, 6, 4, 4, 4)),
+
+// new TodoData(title: "t7", description: "d7", status: true, dateTime: new DateTime(2022, 11, 7, 1, 1, 1)),
+// new TodoData(title: "t7", description: "d7", status: true, dateTime: new DateTime(2022, 11, 7, 2, 2, 2)),
+// new TodoData(title: "t7", description: "d7", status: true, dateTime: new DateTime(2022, 11, 7, 4, 4, 4)),
