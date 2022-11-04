@@ -15,3 +15,11 @@
 - App StoreApp Store
 - ‎Todoist: To-Do List & Planner
   ‎Trusted by 30+ million people and teams worldwide. Todoist is a delightfully simple yet powerful task manager and to-do list app. Finally, organize your work and life. - TechRadar - “...one of the best apps you can use to plan your personal and work schedules. The app has a lot of task management feat…
+
+## Thiết kế UI:
+
+- 1 Screen:
+  - Chọn xem All, Today, Upcoming (ta sẽ làm Tab bottom cho cái những lựa chọn này)
+    - All: Xem tất cả:
+      - Mỗi TodoItem sẽ là có: title, description và time trên 1 column, bên trái có 1 cái checkbox để remove
+    - Upcomming: thì nhiều list và mỗi list là 1 ngày, nếu đc thì Header ta show 1 cái scroll để lấy date (như ứng dụng TodoList mẫu)
