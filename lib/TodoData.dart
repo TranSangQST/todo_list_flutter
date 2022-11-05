@@ -4,7 +4,7 @@ class TodoData {
   bool status;
   DateTime? dateTime;
 
-  String getTtle() {
+  String getTitle() {
     return this.title;
   }
 
@@ -48,6 +48,4 @@ class TodoData {
         status: this.status,
         dateTime: this.dateTime);
   }
-
-
 }

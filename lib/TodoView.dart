@@ -35,7 +35,7 @@ class _TodoViewState extends State<TodoView> {
                 const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
             leading: Checkbox(
               checkColor: Colors.white,
-              value: widget.todoData.status,
+              value: !widget.todoData.status,
               onChanged: (bool? val) {
                 setState(() {
                   widget.todoData.status = !widget.todoData.status;
