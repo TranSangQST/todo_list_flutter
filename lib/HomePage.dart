@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   late SharedPreferences prefs;
   String _todoDataTitle = "";
   String _todoDataDescription = "";
+  String _searchTodoData = "";
   DateTime? _todoDataDate;
   // DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   final _todoDataTitleController = TextEditingController();
   final _todoDataDescriptionController = TextEditingController();
+  final _searchTodoDataController = TextEditingController();
 
   // var _
   //todoDataTitleController = TextEditingController();
@@ -70,7 +72,6 @@ class _HomePageState extends State<HomePage> {
 
     _todoDataTitleController.text = "";
     _todoDataDescriptionController.text = "";
-
 
     setState(() {
       _todoDataTitle = "";
@@ -171,11 +172,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  List<TodoData> getTodoListForEachTab(List<TodoData> todoList, tabType) {
+  List<TodoData> getTodoListForEachTab(
+      List<TodoData> todoList, tabType, searchTodoData) {
+    List<TodoData> todoListForEachTab = [];
+
     switch (tabType) {
       case 0:
         {
-          return todoList;
+          todoListForEachTab = todoList;
         }
         break;
       case 1:
@@ -187,7 +191,7 @@ class _HomePageState extends State<HomePage> {
           print("today: ${today.toString()}");
           print("tomorrow: ${tomorrow.toString()}");
 
-          return todoList.where((element) {
+          todoListForEachTab = todoList.where((element) {
             DateTime? dateTime = element.dateTime;
             if (dateTime != null) {
               return dateTime.isBefore(tomorrow);
@@ -198,17 +202,25 @@ class _HomePageState extends State<HomePage> {
           //   return element.dateTime.isBefore(DateTime.now());
           // }).toList();
         }
+        break;
       case 2:
         {
-          return todoList.where((element) => element.dateTime != null).toList();
+          todoListForEachTab =
+              todoList.where((element) => element.dateTime != null).toList();
         }
         break;
 
       default:
         {
-          return todoList;
+          todoListForEachTab = todoList;
         }
+        break;
     }
+
+    return todoListForEachTab.where((element) {
+      return element.title.contains(searchTodoData) ||
+          element.description.contains(searchTodoData);
+    }).toList();
   }
 
   @override
@@ -231,12 +243,68 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           ExpansionTile(
             title: const Text(
+              "Search...",
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            children: <Widget>[
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: TextField(
+                          decoration: const InputDecoration(
+                              border: InputBorder.none, hintText: 'Search'),
+                          controller: _searchTodoDataController,
+                          keyboardType: TextInputType.multiline,
+                          onChanged: (text) {
+                            setState(() {
+                              _searchTodoData = text;
+                            });
+                          },
+                        ),
+                      ),
+                      _searchTodoData != ""
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                              width: 2,
+                                              color: Color.fromRGBO(
+                                                  210, 210, 210, 1)),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _searchTodoData = "";
+                                          });
+                                          _searchTodoDataController.text = "";
+                                        },
+                                        child: const Icon(
+                                          Icons.clear_rounded,
+                                        )))
+                              ],
+                            )
+                          : const Divider(
+                              height: 0,
+                              thickness: 0,
+                            )
+                    ]),
+              ),
+            ],
+          ),
+          ExpansionTile(
+            title: const Text(
               "Add new Task...",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             children: <Widget>[
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
                       padding: const EdgeInsets.all(2),
@@ -311,7 +379,6 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             onPressed: () {
                                               setState(() {
-
                                                 _todoDataDate = null;
                                               });
                                             },
@@ -458,7 +525,8 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: GroupedListView<dynamic, String>(
-              elements: getTodoListForEachTab(_todoList, _currentTabIndex),
+              elements: getTodoListForEachTab(
+                  _todoList, _currentTabIndex, _searchTodoData),
               itemBuilder: (c, element) {
                 return TodoView(
                   todoData: element,
