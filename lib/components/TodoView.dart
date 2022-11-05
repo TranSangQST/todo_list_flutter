@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:todo_list_flutter/TodoData.dart';
+import 'package:todo_list_flutter/ClassData/TodoData.dart';
 
 class TodoView extends StatefulWidget {
   TodoData todoData;
 
   Function handleRemoveTodo;
-  // TodoView({Key key, this.todo}) : super(key: key);
   TodoView({super.key, required this.todoData, required this.handleRemoveTodo});
 
   @override
-  // _TodoViewState createState() => _TodoViewState(todo: this.todo);
   _TodoViewState createState() => _TodoViewState();
 }
 
@@ -37,12 +35,6 @@ class _TodoViewState extends State<TodoView> {
             leading: Checkbox(
               checkColor: Colors.white,
               value: !widget.todoData.status,
-              //   onChanged: (bool? val) {
-              //     setState(() {
-              //       widget.todoData.status = !widget.todoData.status;
-              //     });
-
-              //   },
               onChanged: (bool? val) {
                 widget.handleRemoveTodo(widget.todoData);
               },
@@ -53,13 +45,11 @@ class _TodoViewState extends State<TodoView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 10), //apply padding to some sides only
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: Text(widget.todoData.title),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 10), //apply padding to some sides only
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       widget.todoData.description,
                       style:
@@ -68,8 +58,7 @@ class _TodoViewState extends State<TodoView> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 10), //apply padding to some sides only
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       formatDate(formatter, widget.todoData.getDateTime()),
                       style:

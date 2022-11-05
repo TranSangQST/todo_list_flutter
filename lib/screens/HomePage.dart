@@ -3,10 +3,11 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'dart:convert';
-import 'TodoView.dart';
-import 'package:todo_list_flutter/TodoData.dart';
+
+import '../components/TodoView.dart';
+import 'package:todo_list_flutter/ClassData/TodoData.dart';
+import '../utils/CustomPropertiesForGroupedListView.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -19,31 +20,34 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late SharedPreferences prefs;
+
+  // state for add new tasks form
   String _todoDataTitle = "";
   String _todoDataDescription = "";
-  String _searchTodoData = "";
   DateTime? _todoDataDate;
-  // DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-
-  List<TodoData> _todoList = [];
-
-  int _currentTabIndex = 0;
 
   final _todoDataTitleController = TextEditingController();
   final _todoDataDescriptionController = TextEditingController();
   final _searchTodoDataController = TextEditingController();
 
-  // var _
-  //todoDataTitleController = TextEditingController();
+  //
+  List<TodoData> _todoList = [];
 
+  // state for search form
+  String _searchTodoData = "";
+
+  //
+  int _currentTabIndex = 0;
+
+  // Refer: https://github.com/projectsforchannel/Todo-Project
   setupTodo() async {
     prefs = await SharedPreferences.getInstance();
     String? stringTodo = prefs.getString('todo');
     if (stringTodo != null) {
       List todoList = jsonDecode(stringTodo!);
-      print("Todo in local: ");
+      // print("Todo in local: ");
       for (var todo in todoList) {
-        print("todo: $todo");
+        // print("todo: $todo");
         setState(() {
           _todoList.add(TodoData.fromJson(todo));
         });
@@ -53,14 +57,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setupTodo();
   }
 
   void addTodo() {
     if (_todoDataTitle == "") {
-      saveTodo();
+      // saveTodo();
       return;
     }
 
@@ -81,95 +84,19 @@ class _HomePageState extends State<HomePage> {
     });
 
     saveTodo();
-    // setState(() {});
   }
 
+  // Refer: https://github.com/projectsforchannel/Todo-Project
   void saveTodo() {
     List todoListJson = _todoList.map((e) => e.toJson()).toList();
     prefs.setString('todo', jsonEncode(todoListJson));
-    int x = 1;
   }
 
   void handleRemoveTodo(TodoData todoData) {
-    print("Remove Click");
-
     setState(() {
       todoData.status = false;
     });
-
     saveTodo();
-  }
-
-  int groupComparator(String value1, String value2, int tabType) {
-    switch (tabType) {
-      case 0:
-        {
-          return 1;
-        }
-
-      case 1:
-      case 2:
-        {
-          return value1 == "Overdue" ? 1 : value2.compareTo(value1);
-        }
-      default:
-        {
-          return 1;
-        }
-    }
-  }
-
-  int itemComparator(dynamic value1, dynamic value2, int tabType) {
-    switch (tabType) {
-      case 0:
-        {
-          return 1;
-        }
-
-      case 1:
-      case 2:
-        {
-          return value2.dateTime.difference(value1.dateTime).inSeconds;
-        }
-      default:
-        {
-          return 1;
-        }
-    }
-  }
-
-  String groupBy(dynamic element, DateFormat formatter, int tabType) {
-    switch (tabType) {
-      case 0:
-        {
-          return "";
-        }
-
-      case 1:
-      case 2:
-        {
-          DateTime today = DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 0, 0, 0);
-          DateTime tomorrow = today.add(Duration(days: 1));
-
-          print("today: ${today.toString()}");
-          print("tomorrow: ${tomorrow.toString()}");
-
-          if (element.dateTime.isBefore(today)) {
-            return "Overdue";
-          } else {
-            if (element.dateTime.isBefore(tomorrow)) {
-              return formatter.format(element.dateTime) + " (Today) ";
-            } else {
-              return formatter.format(element.dateTime);
-            }
-          }
-        }
-      default:
-        {
-          return "";
-        }
-    }
   }
 
   List<TodoData> getTodoListForEachTab(
@@ -188,8 +115,8 @@ class _HomePageState extends State<HomePage> {
               DateTime.now().day, 0, 0, 0);
           DateTime tomorrow = today.add(Duration(days: 1));
 
-          print("today: ${today.toString()}");
-          print("tomorrow: ${tomorrow.toString()}");
+          // print("today: ${today.toString()}");
+          // print("tomorrow: ${tomorrow.toString()}");
 
           todoListForEachTab = todoList.where((element) {
             DateTime? dateTime = element.dateTime;
@@ -225,12 +152,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('-----------------------------------------------------');
-    print('todolist: ');
-    for (int i = 0; i < _todoList.length; i++) {
-      print('${_todoList[i].toString()} -> Date: ${_todoList[i].dateTime}');
-    }
-
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
     final DateFormat formatterDateTime = DateFormat('dd/MM/yyyy hh:mm:ss');
 
@@ -243,6 +164,7 @@ class _HomePageState extends State<HomePage> {
           Container(
               child: Column(
         children: <Widget>[
+          // Search form
           ExpansionTile(
             title: const Text(
               "Search...",
@@ -254,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 18),
                         child: TextField(
                           decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'Search'),
@@ -299,6 +221,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+
+          // Add new task (Todo) form
           ExpansionTile(
             title: const Text(
               "Add new Task...",
@@ -324,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10),
+                                    padding: const EdgeInsets.only(left: 18),
                                     child: TextField(
                                       decoration: const InputDecoration(
                                           border: InputBorder.none,
@@ -340,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10),
+                                    padding: const EdgeInsets.only(left: 18),
                                     child: TextField(
                                       decoration: const InputDecoration(
                                           border: InputBorder.none,
@@ -357,12 +281,11 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ]),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.only(left: 18),
                                   child: Text(
                                     _todoDataDate != null
                                         ? formatterDateTime
@@ -400,6 +323,7 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
+                                // Ref: https://pub.dev/packages/flutter_datetime_picker/example
                                 Row(
                                   children: [
                                     Padding(
@@ -429,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                                                         color: Colors.white,
                                                         fontSize: 16)),
                                                 onConfirm: (date) {
-                                              print('confirm date $date');
+                                              // print('confirm date $date');
 
                                               final DateTime newDate;
                                               DateTime? currentTodoDate =
@@ -450,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                                                 );
                                               }
 
-                                              print('newDate: $newDate');
+                                              // print('newDate: $newDate');
 
                                               setState(() {
                                                 _todoDataDate = newDate;
@@ -476,7 +400,7 @@ class _HomePageState extends State<HomePage> {
                                             DatePicker.showTimePicker(context,
                                                 showTitleActions: true,
                                                 onConfirm: (date) {
-                                              print('confirm time $date');
+                                              // print('confirm time $date');
 
                                               final DateTime newDate;
                                               DateTime? currentTodoDate =
@@ -494,7 +418,7 @@ class _HomePageState extends State<HomePage> {
                                                     date.minute, date.second);
                                               }
 
-                                              print('newDate: $newDate');
+                                              // print('newDate: $newDate');
 
                                               setState(() {
                                                 _todoDataDate = newDate;
@@ -528,7 +452,10 @@ class _HomePageState extends State<HomePage> {
               )
             ],
           ),
-          Expanded(child: GroupedListView<dynamic, String>(
+
+          // List of tasks (Todo)
+          Expanded(
+              child: GroupedListView<dynamic, String>(
             elements: getTodoListForEachTab(
                 _todoList, _currentTabIndex, _searchTodoData),
             itemBuilder: (c, element) {
@@ -537,17 +464,15 @@ class _HomePageState extends State<HomePage> {
                 handleRemoveTodo: handleRemoveTodo,
               );
             },
-
             groupComparator: (value1, value2) =>
-                groupComparator(value1, value2, _currentTabIndex),
-// value1 == "Overdue" ? 1 : value2.compareTo(value1),
+                CustomPropertiesForGroupedListView.groupComparator(
+                    value1, value2, _currentTabIndex),
             order: GroupedListOrder.DESC,
             itemComparator: (value1, value2) =>
-                itemComparator(value1, value2, _currentTabIndex),
-// value2.dateTime.difference(value1.dateTime).inSeconds,
-
-            groupBy: (element) => groupBy(element, formatter, _currentTabIndex),
-// groupBy: (element) => "",
+                CustomPropertiesForGroupedListView.itemComparator(
+                    value1, value2, _currentTabIndex),
+            groupBy: (element) => CustomPropertiesForGroupedListView.groupBy(
+                element, formatter, _currentTabIndex),
             groupSeparatorBuilder: (String value) => Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
@@ -555,7 +480,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: const BoxDecoration(
                       border: Border(
                           bottom:
-                          BorderSide(color: Color.fromRGBO(0, 0, 0, 0.2)))),
+                              BorderSide(color: Color.fromRGBO(0, 0, 0, 0.2)))),
                   child: Text(
                     value,
                     textAlign: TextAlign.left,
@@ -566,18 +491,20 @@ class _HomePageState extends State<HomePage> {
           ))
         ],
       )),
+
+      // Tab
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.all_inbox_rounded),
             label: 'All',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
+            icon: Icon(Icons.today_rounded),
             label: 'Today',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
+            icon: Icon(Icons.upcoming_rounded),
             label: 'Up coming',
           ),
         ],
@@ -592,166 +519,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-// //
-// final List<TodoData> _todoList = [
-//   TodoData(title: "t0", description: "d0", status: true),
-//   TodoData(
-//       title: "t1",
-//       description: "d1",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 1, 1, 1, 1)),
-//   TodoData(
-//       title: "t1",
-//       description: "d1",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 1, 2, 2, 2)),
-//   TodoData(
-//       title: "t1",
-//       description: "d1",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 1, 4, 4, 4)),
-//   TodoData(
-//       title: "t2",
-//       description: "d2",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 2, 1, 1, 1)),
-//   TodoData(
-//       title: "t2",
-//       description: "d2",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 2, 2, 2, 2)),
-//   TodoData(
-//       title: "t2",
-//       description: "d2",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 2, 4, 4, 4)),
-//   TodoData(
-//       title: "t3",
-//       description: "d3",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 3, 1, 1, 1)),
-//   TodoData(
-//       title: "t3",
-//       description: "d3",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 3, 2, 2, 2)),
-//   TodoData(
-//       title: "t3",
-//       description: "d3",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 3, 4, 4, 4)),
-//   TodoData(
-//       title: "t4",
-//       description: "d4",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 4, 1, 1, 1)),
-//   TodoData(
-//       title: "t4",
-//       description: "d4",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 4, 2, 2, 2)),
-//   TodoData(
-//       title: "t4",
-//       description: "d4",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 4, 4, 4, 4)),
-//   TodoData(
-//       title: "t5",
-//       description: "d5",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 5, 1, 1, 1)),
-//   TodoData(
-//       title: "t5",
-//       description: "d5",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 5, 2, 2, 2)),
-//   TodoData(
-//       title: "t5",
-//       description: "d5",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 5, 12, 12, 12)),
-//   TodoData(
-//       title: "t5",
-//       description: "d5",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 5, 4, 4, 4)),
-//   TodoData(
-//       title: "t6",
-//       description: "d6",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 6, 1, 1, 1)),
-//   TodoData(
-//       title: "t6",
-//       description: "d6",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 6, 2, 2, 2)),
-//   TodoData(
-//       title: "t6",
-//       description: "d6",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 6, 4, 4, 4)),
-//   TodoData(
-//       title: "t7",
-//       description: "d7",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 7, 1, 1, 1)),
-//   TodoData(
-//       title: "t7",
-//       description: "d7",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 7, 2, 2, 2)),
-//   TodoData(
-//       title: "t7",
-//       description: "d7",
-//       status: true,
-//       dateTime: DateTime(2022, 11, 7, 4, 4, 4)),
-// ];
-
-
-// import 'package:flutter/material.dart';
-//
-// void main() => runApp(const MyApp());
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   static const String _title = 'Flutter Code Sample';
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       title: _title,
-//       home: MyStatelessWidget(),
-//     );
-//   }
-// }
-//
-// class MyStatelessWidget extends StatelessWidget {
-//   const MyStatelessWidget({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTextStyle(
-//       style: Theme.of(context).textTheme.bodyMedium!,
-//       child: LayoutBuilder(
-//         builder: (BuildContext context, BoxConstraints viewportConstraints) {
-//           return SingleChildScrollView(
-//             child: ConstrainedBox(
-//               constraints: BoxConstraints(
-//                 minHeight: viewportConstraints.maxHeight,
-//               ),
-//               child: IntrinsicHeight(
-//                 child: Column(
-//                   children: <Widget>[
-
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }

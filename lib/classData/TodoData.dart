@@ -20,16 +20,7 @@ class TodoData {
     return this.dateTime;
   }
 
-  TodoData(
-      //   {String title = "",
-      //   String description = "",
-      //   bool status = true,
-      //   DateTime dateTime}) {
-      // this._title = title;
-      // this._description = description;
-      // this._status = status;
-      // this._dateTime = dateTime;
-      {
+  TodoData({
     required this.title,
     required this.description,
     required this.status,
@@ -41,20 +32,12 @@ class TodoData {
     return 'Todo: ${this.title} -> ${this.description} -> ${this.status} -> ${this.dateTime.toString()}';
   }
 
-  TodoData clone() {
-    return new TodoData(
-        title: this.title,
-        description: this.description,
-        status: this.status,
-        dateTime: this.dateTime);
-  }
-
   toJson() {
     return {
       "title": title,
       "description": description,
       "status": status,
-      "dateTime": dateTime !=null ? dateTime.toString() : dateTime,
+      "dateTime": dateTime != null ? dateTime.toString() : dateTime,
     };
   }
 
@@ -63,6 +46,8 @@ class TodoData {
         title: jsonData['title'],
         description: jsonData['description'],
         status: jsonData['status'],
-        dateTime: jsonData['dateTime'] != null ? DateTime.parse(jsonData['dateTime']) : jsonData['dateTime']);
+        dateTime: jsonData['dateTime'] != null
+            ? DateTime.parse(jsonData['dateTime'])
+            : jsonData['dateTime']);
   }
 }

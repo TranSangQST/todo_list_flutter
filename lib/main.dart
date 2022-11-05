@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_flutter/HomePage.dart';
+import 'package:todo_list_flutter/screens/HomePage.dart';
 
-import 'HomePage.dart';
+import 'screens/HomePage.dart';
 
 void main() {
   runApp(const MyApp());
