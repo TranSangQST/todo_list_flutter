@@ -238,8 +238,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-          child: Column(
+      body:
+          //
+          Container(
+              child: Column(
         children: <Widget>[
           ExpansionTile(
             title: const Text(
@@ -316,6 +318,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -354,6 +357,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ]),
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -394,6 +398,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Row(
                                   children: [
@@ -523,45 +528,42 @@ class _HomePageState extends State<HomePage> {
               )
             ],
           ),
-          Expanded(
-            child: GroupedListView<dynamic, String>(
-              elements: getTodoListForEachTab(
-                  _todoList, _currentTabIndex, _searchTodoData),
-              itemBuilder: (c, element) {
-                return TodoView(
-                  todoData: element,
-                  handleRemoveTodo: handleRemoveTodo,
-                );
-              },
+          Expanded(child: GroupedListView<dynamic, String>(
+            elements: getTodoListForEachTab(
+                _todoList, _currentTabIndex, _searchTodoData),
+            itemBuilder: (c, element) {
+              return TodoView(
+                todoData: element,
+                handleRemoveTodo: handleRemoveTodo,
+              );
+            },
 
-              groupComparator: (value1, value2) =>
-                  groupComparator(value1, value2, _currentTabIndex),
+            groupComparator: (value1, value2) =>
+                groupComparator(value1, value2, _currentTabIndex),
 // value1 == "Overdue" ? 1 : value2.compareTo(value1),
-              order: GroupedListOrder.DESC,
-              itemComparator: (value1, value2) =>
-                  itemComparator(value1, value2, _currentTabIndex),
+            order: GroupedListOrder.DESC,
+            itemComparator: (value1, value2) =>
+                itemComparator(value1, value2, _currentTabIndex),
 // value2.dateTime.difference(value1.dateTime).inSeconds,
 
-              groupBy: (element) =>
-                  groupBy(element, formatter, _currentTabIndex),
+            groupBy: (element) => groupBy(element, formatter, _currentTabIndex),
 // groupBy: (element) => "",
-              groupSeparatorBuilder: (String value) => Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color.fromRGBO(0, 0, 0, 0.2)))),
-                    child: Text(
-                      value,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  )),
-            ),
-          ),
+            groupSeparatorBuilder: (String value) => Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom:
+                          BorderSide(color: Color.fromRGBO(0, 0, 0, 0.2)))),
+                  child: Text(
+                    value,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                )),
+          ))
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
@@ -705,3 +707,51 @@ class _HomePageState extends State<HomePage> {
 //       status: true,
 //       dateTime: DateTime(2022, 11, 7, 4, 4, 4)),
 // ];
+
+
+// import 'package:flutter/material.dart';
+//
+// void main() => runApp(const MyApp());
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   static const String _title = 'Flutter Code Sample';
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       title: _title,
+//       home: MyStatelessWidget(),
+//     );
+//   }
+// }
+//
+// class MyStatelessWidget extends StatelessWidget {
+//   const MyStatelessWidget({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return DefaultTextStyle(
+//       style: Theme.of(context).textTheme.bodyMedium!,
+//       child: LayoutBuilder(
+//         builder: (BuildContext context, BoxConstraints viewportConstraints) {
+//           return SingleChildScrollView(
+//             child: ConstrainedBox(
+//               constraints: BoxConstraints(
+//                 minHeight: viewportConstraints.maxHeight,
+//               ),
+//               child: IntrinsicHeight(
+//                 child: Column(
+//                   children: <Widget>[
+
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
