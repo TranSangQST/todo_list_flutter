@@ -6,8 +6,9 @@ import 'package:todo_list_flutter/TodoData.dart';
 class TodoView extends StatefulWidget {
   TodoData todoData;
 
+  Function handleRemoveTodo;
   // TodoView({Key key, this.todo}) : super(key: key);
-  TodoView({super.key, required this.todoData});
+  TodoView({super.key, required this.todoData, required this.handleRemoveTodo});
 
   @override
   // _TodoViewState createState() => _TodoViewState(todo: this.todo);
@@ -36,10 +37,14 @@ class _TodoViewState extends State<TodoView> {
             leading: Checkbox(
               checkColor: Colors.white,
               value: !widget.todoData.status,
+              //   onChanged: (bool? val) {
+              //     setState(() {
+              //       widget.todoData.status = !widget.todoData.status;
+              //     });
+
+              //   },
               onChanged: (bool? val) {
-                setState(() {
-                  widget.todoData.status = !widget.todoData.status;
-                });
+                widget.handleRemoveTodo(widget.todoData);
               },
             ),
             title: Container(

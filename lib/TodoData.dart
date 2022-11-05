@@ -48,4 +48,21 @@ class TodoData {
         status: this.status,
         dateTime: this.dateTime);
   }
+
+  toJson() {
+    return {
+      "title": title,
+      "description": description,
+      "status": status,
+      "dateTime": dateTime !=null ? dateTime.toString() : dateTime,
+    };
+  }
+
+  static TodoData fromJson(jsonData) {
+    return TodoData(
+        title: jsonData['title'],
+        description: jsonData['description'],
+        status: jsonData['status'],
+        dateTime: jsonData['dateTime'] != null ? DateTime.parse(jsonData['dateTime']) : jsonData['dateTime']);
+  }
 }
